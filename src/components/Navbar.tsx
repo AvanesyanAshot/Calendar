@@ -1,20 +1,21 @@
 import { Menu, Row } from "antd";
 import { Header } from "antd/lib/layout/layout";
-import React, { useState } from "react";
+import React from "react";
 import { useRouter } from "../hooks/useRouter";
+import { useTypedSelector } from "../hooks/useTypedSelector";
 import { RouteName } from "../router";
 
 const Navbar = () => {
   const { navigate } = useRouter();
-  let [auth, setAuth] = useState<boolean>(true);
+  const { isAuth } = useTypedSelector((state) => state.auth);
   return (
     <Header>
       <Row justify="end">
-        {auth ? (
+        {isAuth ? (
           <>
             <div style={{ color: "white" }}>Hello, Max</div>
             <Menu theme="dark" mode="horizontal" selectable={false}>
-              <Menu.Item onClick={() => setAuth(false)} key="1">
+              <Menu.Item onClick={() => console.log(false)} key="1">
                 Exit
               </Menu.Item>
             </Menu>
