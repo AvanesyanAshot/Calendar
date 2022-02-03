@@ -12,7 +12,7 @@ import {
 
 export const AuthActionCreators = {
   setUser: (user: IUser): SetUserAction => ({
-    type: AuthActionsEnum.SET_User,
+    type: AuthActionsEnum.SET_USER,
     payload: user,
   }),
   setIsAuth: (isAuth: boolean): SetAuthAction => ({
@@ -44,11 +44,12 @@ export const AuthActionCreators = {
           } else {
             dispatch(AuthActionCreators.setError("ERROR"));
           }
+          dispatch(AuthActionCreators.setIsLoading(false));
         }, 1000);
       } catch (e) {
         dispatch(AuthActionCreators.setError("Incorrect login or password"));
+        dispatch(AuthActionCreators.setIsLoading(false));
       }
-      dispatch(AuthActionCreators.setIsLoading(false));
     },
 
   logout: () => (dispatch: AppDispatch) => {
