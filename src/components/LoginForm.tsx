@@ -1,28 +1,33 @@
-import { Input, Form, Button } from "antd";
+import { Button, Form, Input } from "antd";
 import Checkbox from "antd/lib/checkbox/Checkbox";
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useTypedSelector } from "../hooks/useTypedSelector";
+import { AuthActionCreators } from "../store/reducers/auth/action-creators";
 import { rules } from "../utils/rules";
 
 const LoginForm = () => {
-  const onFinish = (values: any) => {
-    console.log("Success:", values);
+  const [userName, setUserName] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  const dispatch = useDispatch();
+  const { error, isLoading } = useTypedSelector((state) => state.auth);
+  const onSubmit = () => {
+    dispatch(AuthActionCreators.login(userName, password));
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
   return (
     <Form
       name="basic"
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}
       initialValues={{ remember: true }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
+      onFinish={onSubmit}
       autoComplete="off"
     >
+      {error && <div style={{ color: "red" }}>{error}</div>}
       <Form.Item label="Username" name="username" rules={[]}>
-        <Input />
+        <Input value={userName} onChange={(e) => setUserName(e.target.value)} />
       </Form.Item>
 
       <Form.Item
@@ -30,7 +35,10 @@ const LoginForm = () => {
         name="password"
         rules={[rules.required("Please input your password!")]}
       >
-        <Input.Password />
+        <Input.Password
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
       </Form.Item>
 
       <Form.Item
@@ -42,7 +50,7 @@ const LoginForm = () => {
       </Form.Item>
 
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" loading={isLoading}>
           Submit
         </Button>
       </Form.Item>

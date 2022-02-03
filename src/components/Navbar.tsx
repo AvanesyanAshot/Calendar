@@ -1,33 +1,37 @@
 import { Menu, Row } from "antd";
 import { Header } from "antd/lib/layout/layout";
 import React from "react";
+import { useDispatch } from "react-redux";
 import { useRouter } from "../hooks/useRouter";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 import { RouteName } from "../router";
+import { AuthActionCreators } from "../store/reducers/auth/action-creators";
 
 const Navbar = () => {
   const { navigate } = useRouter();
-  const { isAuth } = useTypedSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const { isAuth, user } = useTypedSelector((state) => state.auth);
   return (
     <Header>
-      <Row justify="end">
-        {isAuth ? (
-          <>
-            <div style={{ color: "white" }}>Hello, Max</div>
-            <Menu theme="dark" mode="horizontal" selectable={false}>
-              <Menu.Item onClick={() => console.log(false)} key="1">
-                Exit
-              </Menu.Item>
-            </Menu>
-          </>
-        ) : (
+      {isAuth ? (
+        <>
+          <div style={{ color: "white" }}>Hello, {user.username}</div>
           <Menu theme="dark" mode="horizontal" selectable={false}>
-            <Menu.Item onClick={() => navigate(RouteName.LOGIN)} key="1">
-              Login
+            <Menu.Item
+              onClick={() => dispatch(AuthActionCreators.logout())}
+              key="1"
+            >
+              Exit
             </Menu.Item>
           </Menu>
-        )}
-      </Row>
+        </>
+      ) : (
+        <Menu theme="dark" mode="horizontal" selectable={false}>
+          <Menu.Item onClick={() => navigate(RouteName.LOGIN)} key="1">
+            Login
+          </Menu.Item>
+        </Menu>
+      )}
     </Header>
   );
 };
