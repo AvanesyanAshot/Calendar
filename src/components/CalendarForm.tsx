@@ -1,13 +1,16 @@
 import { Input, Form, Button, DatePicker, Select } from "antd";
 import { Option } from "antd/lib/mentions";
+import { Moment } from "moment";
 import React, { FC, useState } from "react";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 import { IEvent } from "../models/IEvent";
 import { IUser } from "../models/IUser";
+import { formatDate } from "../utils/date";
 import { rules } from "../utils/rules";
 
 interface CalendarFormProps {
   guests: IUser[];
+  submit: (event: IEvent) => void;
 }
 
 const CalendarForm: FC<CalendarFormProps> = (props) => {
@@ -17,10 +20,17 @@ const CalendarForm: FC<CalendarFormProps> = (props) => {
     description: "",
     guest: "",
   });
-  const onSubmit = () => {
-    console.log("bruh");
+  const selectDate = (date: Moment | null) => {
+    if (date) {
+      setEvent({ ...event, date: formatDate(date.toDate()) });
+    }
   };
-  const { isLoading } = useTypedSelector((state) => state.auth);
+  const { user } = useTypedSelector((state) => state.auth);
+
+  const onSubmit = () => {
+    props.submit({ ...event, author: user.username });
+  };
+
   return (
     <Form
       initialValues={{ remember: true }}
@@ -38,7 +48,7 @@ const CalendarForm: FC<CalendarFormProps> = (props) => {
         />
       </Form.Item>
       <Form.Item label="Date" name="date" rules={[rules.required()]}>
-        <DatePicker />
+        <DatePicker onChange={selectDate} />
       </Form.Item>
       <Form.Item label="" name="guest" rules={[rules.required()]}>
         <Select onChange={(guest: string) => setEvent({ ...event, guest })}>
@@ -50,7 +60,7 @@ const CalendarForm: FC<CalendarFormProps> = (props) => {
         </Select>
       </Form.Item>
       <Form.Item wrapperCol={{ offset: 20, span: 16 }}>
-        <Button type="primary" htmlType="submit" loading={isLoading}>
+        <Button type="primary" htmlType="submit">
           Submit
         </Button>
       </Form.Item>

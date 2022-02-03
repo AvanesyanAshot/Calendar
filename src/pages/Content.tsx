@@ -6,11 +6,16 @@ import ContentCalendar from "../components/ContentCalendar";
 import { useActions } from "../hooks/useActions";
 import useToggle from "../hooks/useToggle";
 import { useTypedSelector } from "../hooks/useTypedSelector";
+import { IEvent } from "../models/IEvent";
 
 const Content: FC = () => {
   const [toggle, { onToggle, offToggle }] = useToggle();
-  const { fetchGuest } = useActions();
+  const { fetchGuest, createEvent } = useActions();
   const { guests } = useTypedSelector((state) => state.calendar);
+  const addNewEvent = (event: IEvent) => {
+    offToggle();
+    createEvent(event);
+  };
   useEffect(() => {
     fetchGuest();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -28,7 +33,7 @@ const Content: FC = () => {
         footer={null}
         onCancel={offToggle}
       >
-        <CalendarForm guests={guests} />
+        <CalendarForm guests={guests} submit={addNewEvent} />
       </Modal>
     </Layout>
   );
