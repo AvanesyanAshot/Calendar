@@ -1,10 +1,10 @@
-import { Input, Form, Button, DatePicker, Select } from "antd";
-import { Option } from "antd/lib/mentions";
+import { Button, DatePicker, Form, Input, Select } from "antd";
 import { Moment } from "moment";
 import React, { FC, useState } from "react";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 import { IEvent } from "../models/IEvent";
 import { IUser } from "../models/IUser";
+import { IEventType } from "../store/reducers/calendar/types";
 import { formatDate } from "../utils/date";
 import { rules } from "../utils/rules";
 
@@ -19,7 +19,9 @@ const CalendarForm: FC<CalendarFormProps> = (props) => {
     date: "",
     description: "",
     guest: "",
+    type: "default",
   });
+
   const selectDate = (date: Moment | null) => {
     if (date) {
       setEvent({ ...event, date: formatDate(date.toDate()) });
@@ -50,13 +52,22 @@ const CalendarForm: FC<CalendarFormProps> = (props) => {
       <Form.Item label="Date" name="date" rules={[rules.required()]}>
         <DatePicker onChange={selectDate} />
       </Form.Item>
-      <Form.Item label="" name="guest" rules={[rules.required()]}>
+      <Form.Item label="guest" name="guest" rules={[rules.required()]}>
         <Select onChange={(guest: string) => setEvent({ ...event, guest })}>
           {props.guests.map((guest) => (
-            <Option value={guest.username} key={guest.username}>
+            <Select.Option value={guest.username} key={guest.username}>
               {guest.username}
-            </Option>
+            </Select.Option>
           ))}
+        </Select>
+      </Form.Item>
+      <Form.Item label="type" name="type">
+        <Select onChange={(type: IEventType) => setEvent({ ...event, type })}>
+          <Select.Option value={"default"}>default</Select.Option>
+          <Select.Option value={"success"}>success</Select.Option>
+          <Select.Option value={"processing"}>processing</Select.Option>
+          <Select.Option value={"error"}>error</Select.Option>
+          <Select.Option value={"warning"}>warning</Select.Option>
         </Select>
       </Form.Item>
       <Form.Item wrapperCol={{ offset: 20, span: 16 }}>

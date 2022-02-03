@@ -1,6 +1,13 @@
 import { IEvent } from "./../../../models/IEvent";
 import { IUser } from "./../../../models/IUser";
 
+export type IEventType =
+  | "default"
+  | "success"
+  | "processing"
+  | "error"
+  | "warning";
+
 export interface CalendarState {
   guests: IUser[];
   events: IEvent[];

@@ -13,7 +13,7 @@ const Content: FC = () => {
   const { fetchGuest, createEvent, fetchEvent } = useActions();
   const { user } = useTypedSelector((state) => state.auth);
 
-  const { guests } = useTypedSelector((state) => state.calendar);
+  const { guests, events } = useTypedSelector((state) => state.calendar);
   const addNewEvent = (event: IEvent) => {
     offToggle();
     createEvent(event);
@@ -26,7 +26,7 @@ const Content: FC = () => {
 
   return (
     <Layout>
-      <ContentCalendar event={[]} />
+      <ContentCalendar events={events} />
       <Row justify="center">
         <Button onClick={onToggle}>Add event</Button>
       </Row>
