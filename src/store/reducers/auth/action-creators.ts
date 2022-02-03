@@ -1,5 +1,6 @@
-import { AppDispatch } from "./../../index";
+import axios from "axios";
 import { IUser } from "./../../../models/IUser";
+import { AppDispatch } from "./../../index";
 import {
   AuthActionsEnum,
   SetAuthAction,
@@ -7,7 +8,6 @@ import {
   SetIsLoadingAction,
   SetUserAction,
 } from "./types";
-import axios from "axios";
 
 export const AuthActionCreators = {
   setUser: (user: IUser): SetUserAction => ({

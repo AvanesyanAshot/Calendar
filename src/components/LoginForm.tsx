@@ -1,19 +1,19 @@
 import { Button, Form, Input } from "antd";
 import Checkbox from "antd/lib/checkbox/Checkbox";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useActions } from "../hooks/useActions";
 import { useTypedSelector } from "../hooks/useTypedSelector";
-import { AuthActionCreators } from "../store/reducers/auth/action-creators";
 import { rules } from "../utils/rules";
 
 const LoginForm = () => {
   const [userName, setUserName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const dispatch = useDispatch();
+  const { login } = useActions();
+
   const { error, isLoading } = useTypedSelector((state) => state.auth);
   const onSubmit = () => {
-    dispatch(AuthActionCreators.login(userName, password));
+    login(userName, password);
   };
 
   return (
