@@ -1,6 +1,6 @@
-export interface ICalendar {
+export interface IEvent {
   author: string;
-  quest: string;
+  guest: string;
   date: string;
   description: string;
 }

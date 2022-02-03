@@ -1,9 +1,9 @@
 import { Calendar } from "antd";
 import React, { FC } from "react";
-import { ICalendar } from "../models/ICalendar";
+import { IEvent } from "../models/IEvent";
 
 interface ContentCalendarProps {
-  event: ICalendar[];
+  event: IEvent[];
 }
 
 const ContentCalendar: FC<ContentCalendarProps> = () => {
