@@ -49,7 +49,14 @@ const CalendarForm: FC<CalendarFormProps> = (props) => {
           onChange={(e) => setEvent({ ...event, description: e.target.value })}
         />
       </Form.Item>
-      <Form.Item label="Date" name="date" rules={[rules.required()]}>
+      <Form.Item
+        label="Date"
+        name="date"
+        rules={[
+          rules.required(),
+          rules.isDateAfter("You cant create an event in the past "),
+        ]}
+      >
         <DatePicker onChange={selectDate} />
       </Form.Item>
       <Form.Item label="guest" name="guest" rules={[rules.required()]}>
