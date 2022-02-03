@@ -32,4 +32,16 @@ export const CalendarActionCreators = {
       console.log(e);
     }
   },
+  fetchEvent: (userName: string) => async (dispatch: AppDispatch) => {
+    try {
+      const events = localStorage.getItem("events") || "[]";
+      const json = JSON.parse(events) as IEvent[];
+      const currentUserEvents = json.filter(
+        (ev) => ev.author === userName || ev.guest === userName
+      );
+      dispatch(CalendarActionCreators.setEvents(currentUserEvents));
+    } catch (e) {
+      console.log(e);
+    }
+  },
 };

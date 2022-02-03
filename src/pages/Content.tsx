@@ -10,7 +10,9 @@ import { IEvent } from "../models/IEvent";
 
 const Content: FC = () => {
   const [toggle, { onToggle, offToggle }] = useToggle();
-  const { fetchGuest, createEvent } = useActions();
+  const { fetchGuest, createEvent, fetchEvent } = useActions();
+  const { user } = useTypedSelector((state) => state.auth);
+
   const { guests } = useTypedSelector((state) => state.calendar);
   const addNewEvent = (event: IEvent) => {
     offToggle();
@@ -18,6 +20,7 @@ const Content: FC = () => {
   };
   useEffect(() => {
     fetchGuest();
+    fetchEvent(user.username);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
