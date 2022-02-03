@@ -1,4 +1,4 @@
-import Calendar from "../pages/Calendar";
+import Calendar from "../pages/Content";
 import Login from "../pages/Login";
 import NotFound from "../pages/NotFound";
 
